@@ -75,12 +75,18 @@ class ModuleHL {
 
 		return switch( t.t ) {
 		case TVoid: macro : Void;
-		case TChar: macro : hl.UI8;
+		case TChar: (isOut) ? macro : hl.Ref<hl.UI8> : macro : hl.UI8;
 		case TInt, TUInt: (isOut) ? macro : hl.Ref<Int> : macro : Int;
 		//case TInt64 : hl ? macro : hl.I64 : macro : haxe.Int64; 
 		case TInt64 : hl ? ((isOut  ? (macro : hl.Ref<haxe.Int64>) : (macro : haxe.Int64))) : (macro : haxe.Int64);
-		case TShort: hl ? macro : hl.UI16 : macro : Int;
-		case TFloat: hl ? ((isOut  ? (macro : hl.Ref<Single>) : (macro : Single))) : (macro : Float);
+		case TShort: 
+			hl ?
+			( isOut ? (macro : hl.Ref<hl.UI16>) : (macro : hl.UI16) )
+			: macro : Int;
+		case TFloat: 
+			hl ? 
+			(( isOut ? (macro : hl.Ref<Single>) : (macro : Single))) 
+			: (macro : Float);
 		case TDouble: hl ? ((isOut  ? (macro : hl.Ref<Float>) : (macro : Float))) : (macro : Float);
 		case TBool: hl ? ((isOut  ? (macro : hl.Ref<Bool>) : (macro : Bool))) : (macro : Bool);
 		case TDynamic: macro :Dynamic;
